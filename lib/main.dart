@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restogo_app/screen/home/home_screen.dart';
+import 'package:restogo_app/screen/search/search_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,9 +11,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const HomeScreen(),
+        "/search": (context) => const SearchScreen(),
+      },
     );
   }
 }
