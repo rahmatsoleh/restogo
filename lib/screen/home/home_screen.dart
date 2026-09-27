@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
           slivers: [
             SliverToBoxAdapter(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 8),
                   HeroHome(),
@@ -39,11 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     "Temukan Restaurant Favoritmu",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight(600),
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   SizedBox(height: 16),
                 ],
@@ -51,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             // RestaurantsExceptionHome(actionButton: reloadData),
             SliverRestaurantsHome(),
+            SliverToBoxAdapter(child: SizedBox(height: 50)),
           ],
         ),
       ),

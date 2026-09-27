@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/style/colors/restogo_colors.dart';
 
 class ReviewController extends StatelessWidget {
   final TextEditingController value;
@@ -10,10 +11,7 @@ class ReviewController extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Review',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-        ),
+        Text('Review', style: Theme.of(context).textTheme.titleMedium),
         SizedBox(height: 8),
         TextFormField(
           controller: value,
@@ -22,14 +20,23 @@ class ReviewController extends StatelessWidget {
           decoration: InputDecoration(
             hintText: 'Tuliskan pengalaman kamu...',
             filled: true,
-            fillColor: Colors.white,
+            fillColor: ColorScheme.of(context).surfaceBright,
+            errorStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: ColorScheme.of(context).error,
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.grey, width: 2),
+              borderSide: BorderSide(
+                color: ColorScheme.of(context).secondary,
+                width: 2,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: Color(0xFF6C63FF), width: 2),
+              borderSide: BorderSide(
+                color: RestogoColors.brand.color,
+                width: 2,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -43,10 +50,6 @@ class ReviewController extends StatelessWidget {
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Review wajib diisi';
-            }
-
-            if (value.trim().length < 10) {
-              return 'Review minimal 10 karakter';
             }
 
             return null;

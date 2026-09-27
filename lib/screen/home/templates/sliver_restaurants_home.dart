@@ -11,7 +11,7 @@ class SliverRestaurantsHome extends StatelessWidget {
       itemCount: 10,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
           child: ListItemRestaurant(
             eventRoute: () {
               Navigator.pushNamed(

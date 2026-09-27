@@ -10,10 +10,10 @@ class SquareCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: ColorScheme.of(context).secondary),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Text(label),
+      child: Text(label, style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }

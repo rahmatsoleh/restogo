@@ -114,7 +114,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     ? Center(
                         child: Text(
                           'Terima kasih sudah memberikan feedback ❤️',
-                          style: TextStyle(color: Colors.green, fontSize: 14),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: ColorScheme.of(context).tertiary,
+                              ),
                         ),
                       )
                     : SizedBox(height: 20),

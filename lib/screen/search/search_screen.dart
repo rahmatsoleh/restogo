@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/screen/search/templates/notfound_search.dart';
 import 'package:restogo_app/screen/search/templates/result_list_search.dart';
+import 'package:restogo_app/style/colors/restogo_colors.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -37,6 +39,9 @@ class _SearchScreenState extends State<SearchScreen> {
               Expanded(
                 child: TextField(
                   focusNode: _searchFocusNode,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: RestogoColors.brand.color,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Cari resto atau makanan...",
                     filled: true,
@@ -51,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Color(0xFFF86502),
+                        color: RestogoColors.brand.color,
                         width: 1.5,
                       ),
                     ),
@@ -65,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
               SizedBox(width: 8),
               Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFF86502),
+                  color: RestogoColors.brand.color,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: IconButton(
@@ -77,7 +82,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: ResultListSearch(),
+      // body: ResultListSearch(),
+      body: NotfoundSearch(),
     );
   }
 }

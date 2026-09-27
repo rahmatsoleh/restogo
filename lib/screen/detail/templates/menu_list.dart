@@ -14,10 +14,7 @@ class MenuList extends StatelessWidget {
         SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
+          child: Text(label, style: Theme.of(context).textTheme.headlineSmall),
         ),
         SizedBox(
           height: 180,

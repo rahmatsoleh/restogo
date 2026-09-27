@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/style/colors/restogo_colors.dart';
 
 class ButtonSubmit extends StatefulWidget {
   final Future<void> Function() onSubmit;
@@ -37,7 +38,7 @@ class _ButtonSubmitState extends State<ButtonSubmit> {
       child: ElevatedButton(
         onPressed: isLoading ? null : handleSubmit,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xffff1717),
+          backgroundColor: RestogoColors.brand.color,
           foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(
@@ -53,14 +54,16 @@ class _ButtonSubmitState extends State<ButtonSubmit> {
                   strokeWidth: 2.5,
                 ),
               )
-            : const Row(
+            : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.send_rounded),
                   SizedBox(width: 10),
                   Text(
                     'Kirim Review',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
                   ),
                 ],
               ),

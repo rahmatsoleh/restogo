@@ -29,11 +29,7 @@ class ListItemRestaurant extends StatelessWidget {
               children: [
                 Text(
                   "Melting Pot",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,11 +42,7 @@ class ListItemRestaurant extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "Gading Tugusumberjo Peterongan Jombang Jawa Timur Indonesia",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -65,7 +57,7 @@ class ListItemRestaurant extends StatelessWidget {
                         SizedBox(width: 4),
                         Text(
                           "4.8",
-                          style: TextStyle(fontFamily: "Poppins", fontSize: 14),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -74,11 +66,7 @@ class ListItemRestaurant extends StatelessWidget {
                 SizedBox(height: 4),
                 Text(
                   "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure.",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

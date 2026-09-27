@@ -13,11 +13,12 @@ class ReviewsDetail extends StatelessWidget {
         SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: const Text(
+          child: Text(
             "Apa kata mereka",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
+        SizedBox(height: 8.0),
         SizedBox(
           height: 150,
           child: ListView.separated(

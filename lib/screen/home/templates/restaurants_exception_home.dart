@@ -15,9 +15,9 @@ class RestaurantsExceptionHome extends StatelessWidget {
           children: [
             Text(
               "Terjadi kesalahan",
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 16.0),
             ElevatedButton.icon(
               onPressed: () => actionButton(),
               icon: const Icon(Icons.refresh),

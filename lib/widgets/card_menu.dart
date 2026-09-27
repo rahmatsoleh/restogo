@@ -9,6 +9,7 @@ class CardMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
+      color: ColorScheme.of(context).surfaceBright,
       child: SizedBox(
         width: 170,
         child: Column(
@@ -29,7 +30,7 @@ class CardMenu extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Text(
                 name,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                style: Theme.of(context).textTheme.bodyLarge,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

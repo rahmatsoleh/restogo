@@ -14,10 +14,11 @@ class CategoriesDetail extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Category Restaurant",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            "Kategori Restaurant",
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
+        SizedBox(height: 8.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Wrap(

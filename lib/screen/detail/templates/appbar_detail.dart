@@ -10,7 +10,7 @@ class AppbarDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      backgroundColor: Colors.black,
+      backgroundColor: ColorScheme.of(context).surface,
       expandedHeight: 300,
       automaticallyImplyLeading: false,
       flexibleSpace: FlexibleSpaceBar(
@@ -44,12 +44,9 @@ class AppbarDetail extends StatelessWidget {
           color: Colors.black.withOpacity(0.6),
           child: Text(
             name,
-            style: const TextStyle(
-              fontFamily: "Poppins",
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
       ),

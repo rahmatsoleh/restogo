@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/style/fonts/restogo_text_style.dart';
 
 class AppbarHome extends StatelessWidget {
   const AppbarHome({super.key});
@@ -21,17 +22,17 @@ class AppbarHome extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
-              Text(
-                "RestoGO",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontFamily: "ChangaOne",
-                  color: Color(0xFFF86502),
-                ),
-              ),
+              Text("RestoGO", style: RestogoTextStyle.changaHeadingMedium),
             ],
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.dark_mode, size: 30)),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.dark_mode,
+              size: 30,
+              color: ColorScheme.of(context).primary,
+            ),
+          ),
         ],
       ),
     );

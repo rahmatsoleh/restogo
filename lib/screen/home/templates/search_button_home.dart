@@ -11,7 +11,7 @@ class SearchButtonHome extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 16),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
-        color: Color(0xffFFF3EA),
+        color: ColorScheme.of(context).secondaryContainer,
         borderRadius: BorderRadius.circular(20),
       ),
       child: InkWell(
@@ -21,9 +21,11 @@ class SearchButtonHome extends StatelessWidget {
             Icon(Icons.search, color: Color(0xff999999)),
             SizedBox(width: 8),
             Expanded(
-              child: const Text(
+              child: Text(
                 "Lagi pengen makan apa ?",
-                style: TextStyle(color: Color(0xff555555)),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Color(0xff999999)),
               ),
             ),
             Icon(Icons.restaurant, color: Color(0xffff1717)),

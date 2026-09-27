@@ -19,7 +19,7 @@ class CardReview extends StatelessWidget {
       height: 150,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: ColorScheme.of(context).secondary),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -28,16 +28,16 @@ class CardReview extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                review,
-                style: TextStyle(fontSize: 14),
+                "\" ${review} \"",
+                style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          Text(name, style: TextStyle(fontWeight: FontWeight.w500)),
-          Text(date, style: TextStyle(color: Colors.grey.shade600)),
+          Text(name, style: Theme.of(context).textTheme.titleMedium),
+          Text(date, style: Theme.of(context).textTheme.titleSmall),
         ],
       ),
     );
