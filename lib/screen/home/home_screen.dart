@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/static/navigation_route.dart';
 import 'package:restogo_app/widgets/list_item_restaurant.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -79,7 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, "/search");
+                            Navigator.pushNamed(
+                              context,
+                              NavigationRoute.searchRoute.name,
+                            );
                           },
                           child: Row(
                             children: [
