@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restogo_app/providers/theme_provider.dart';
 import 'package:restogo_app/style/fonts/restogo_text_style.dart';
 
 class AppbarHome extends StatelessWidget {
@@ -6,6 +8,8 @@ class AppbarHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -26,9 +30,9 @@ class AppbarHome extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => themeProvider.changeTheme(),
             icon: Icon(
-              Icons.dark_mode,
+              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
               size: 30,
               color: ColorScheme.of(context).primary,
             ),
