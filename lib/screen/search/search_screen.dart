@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/widgets/list_item_restaurant.dart';
+import 'package:restogo_app/screen/search/templates/result_list_search.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -77,18 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              child: ListItemRestaurant(),
-            );
-          },
-        ),
-      ),
+      body: ResultListSearch(),
     );
   }
 }

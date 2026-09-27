@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/static/navigation_route.dart';
 
 class ListItemRestaurant extends StatelessWidget {
-  const ListItemRestaurant({super.key});
+  final Function eventRoute;
+
+  const ListItemRestaurant({super.key, required this.eventRoute});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          NavigationRoute.detailRoute.name,
-          arguments: "helloworld",
-        );
-      },
+      onTap: () => eventRoute(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
