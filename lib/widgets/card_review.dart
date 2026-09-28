@@ -28,7 +28,7 @@ class CardReview extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                "\" ${review} \"",
+                '" $review "',
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
                 maxLines: 3,

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/model/retaurant_list_response.dart';
 
 class ListItemRestaurant extends StatelessWidget {
   final Function eventRoute;
+  final Restaurant restaurant;
 
-  const ListItemRestaurant({super.key, required this.eventRoute});
+  const ListItemRestaurant({
+    super.key,
+    required this.eventRoute,
+    required this.restaurant,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +23,12 @@ class ListItemRestaurant extends StatelessWidget {
             height: 90,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-            child: Image.network(
-              "https://restaurant-api.dicoding.dev/images/medium/14",
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: restaurant.pictureId,
+              child: Image.network(
+                "https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}",
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SizedBox(width: 12),
@@ -28,7 +37,7 @@ class ListItemRestaurant extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Melting Pot",
+                  restaurant.name,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Row(
@@ -41,7 +50,7 @@ class ListItemRestaurant extends StatelessWidget {
                           SizedBox(width: 4),
                           Expanded(
                             child: Text(
-                              "Gading Tugusumberjo Peterongan Jombang Jawa Timur Indonesia",
+                              restaurant.city,
                               style: Theme.of(context).textTheme.bodyMedium,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -56,7 +65,7 @@ class ListItemRestaurant extends StatelessWidget {
                         Icon(Icons.star, color: Colors.amberAccent),
                         SizedBox(width: 4),
                         Text(
-                          "4.8",
+                          restaurant.rating.toString(),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -65,7 +74,7 @@ class ListItemRestaurant extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure.",
+                  restaurant.description,
                   style: Theme.of(context).textTheme.bodyMedium,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

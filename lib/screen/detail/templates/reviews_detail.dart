@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/model/restaurant_detail_response.dart';
 import 'package:restogo_app/widgets/card_review.dart';
 
 class ReviewsDetail extends StatelessWidget {
-  final List<Map<String, dynamic>> reviews;
+  final List<CustomerReview> reviews;
 
   const ReviewsDetail({super.key, required this.reviews});
 
@@ -27,9 +28,9 @@ class ReviewsDetail extends StatelessWidget {
             itemCount: reviews.length,
             itemBuilder: (context, index) {
               return CardReview(
-                name: reviews[index]["name"],
-                date: reviews[index]["date"],
-                review: reviews[index]["review"],
+                name: reviews[index].name,
+                date: reviews[index].date,
+                review: reviews[index].review,
               );
             },
             separatorBuilder: (context, index) {

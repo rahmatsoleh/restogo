@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/model/restaurant_detail_response.dart';
 import 'package:restogo_app/widgets/square_card.dart';
 
 class CategoriesDetail extends StatelessWidget {
-  final List<Map<String, dynamic>> categories;
+  final List<Category> categories;
 
   const CategoriesDetail({super.key, required this.categories});
 
@@ -26,7 +27,7 @@ class CategoriesDetail extends StatelessWidget {
             spacing: 8.0,
             runSpacing: 8.0,
             children: List.generate(categories.length, (index) {
-              return SquareCard(label: categories[index]["name"]);
+              return SquareCard(label: categories[index].name);
             }),
           ),
         ),

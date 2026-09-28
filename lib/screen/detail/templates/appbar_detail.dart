@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppbarDetail extends StatelessWidget {
   final String name;
-  final String imageUrl;
+  final String pictureId;
 
-  const AppbarDetail({super.key, required this.name, required this.imageUrl});
+  const AppbarDetail({super.key, required this.name, required this.pictureId});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,15 @@ class AppbarDetail extends StatelessWidget {
         titlePadding: const EdgeInsets.all(0),
         background: Stack(
           children: [
-            Positioned.fill(child: Image.network(imageUrl, fit: BoxFit.cover)),
+            Positioned.fill(
+              child: Hero(
+                tag: pictureId,
+                child: Image.network(
+                  "https://restaurant-api.dicoding.dev/images/medium/$pictureId",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             SafeArea(
               child: Align(
                 alignment: Alignment.topLeft,
@@ -25,7 +33,7 @@ class AppbarDetail extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -41,7 +49,7 @@ class AppbarDetail extends StatelessWidget {
         title: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8),
-          color: Colors.black.withOpacity(0.6),
+          color: Colors.black.withValues(alpha: 0.6),
           child: Text(
             name,
             style: Theme.of(

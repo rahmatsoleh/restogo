@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/api/api_services.dart';
+import 'package:restogo_app/data/model/retaurant_list_response.dart';
 import 'package:restogo_app/screen/search/templates/notfound_search.dart';
 import 'package:restogo_app/screen/search/templates/result_list_search.dart';
 import 'package:restogo_app/style/colors/restogo_colors.dart';
@@ -12,6 +14,39 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final FocusNode _searchFocusNode = FocusNode();
+  final TextEditingController _query = TextEditingController();
+
+  List<Restaurant> _restaurants = [];
+  bool _isLoading = false;
+  bool _hasError = false;
+
+  Future<void> loadData() async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
+    try {
+      final response = await ApiServices().getSearchRestaurantList(_query.text);
+
+      setState(() {
+        _restaurants = response.restaurants;
+      });
+    } catch (e) {
+      setState(() {
+        _hasError = true;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -24,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _searchFocusNode.dispose();
+    _query.dispose();
     super.dispose();
   }
 
@@ -38,6 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               Expanded(
                 child: TextField(
+                  controller: _query,
                   focusNode: _searchFocusNode,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: RestogoColors.brand.color,
@@ -74,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => loadData(),
                   icon: Icon(Icons.search, color: Colors.white),
                 ),
               ),
@@ -82,8 +119,12 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      // body: ResultListSearch(),
-      body: NotfoundSearch(),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ((_hasError || (_restaurants.isEmpty && _query.text.isNotEmpty))
+                ? NotfoundSearch()
+                : ResultListSearch(restaurants: _restaurants)),
+      // body: NotfoundSearch(),
     );
   }
 }

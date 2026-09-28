@@ -14,8 +14,10 @@ class RestaurantsExceptionHome extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Terjadi kesalahan",
-              style: Theme.of(context).textTheme.bodyLarge,
+              "Gagal mengambil data",
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: ColorScheme.of(context).error,
+              ),
             ),
             SizedBox(height: 16.0),
             ElevatedButton.icon(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/api/api_services.dart';
+import 'package:restogo_app/data/model/retaurant_list_response.dart';
 import 'package:restogo_app/screen/home/templates/appbar_home.dart';
 import 'package:restogo_app/screen/home/templates/hero_home.dart';
 import 'package:restogo_app/screen/home/templates/restaurants_exception_home.dart';
@@ -14,8 +16,51 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void reloadData() {
-    print("Data Reloaded");
+  RestaurantListResponse? _futureRestaurantResponse;
+  bool _isLoading = false;
+  bool _hasError = false;
+
+  Future<void> loadData() async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
+    try {
+      final response = await ApiServices().getRestaurantList();
+      setState(() {
+        _futureRestaurantResponse = response;
+      });
+    } catch (e) {
+      setState(() {
+        _hasError = true;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  Widget displayRestaurant() {
+    return _isLoading
+        ? SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+        : (_hasError
+              ? RestaurantsExceptionHome(actionButton: loadData)
+              : SliverRestaurantsHome(
+                  restaurants: _futureRestaurantResponse!.restaurants,
+                ));
   }
 
   @override
@@ -40,14 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     "Temukan Restaurant Favoritmu",
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 16),
                 ],
               ),
             ),
-            // RestaurantsExceptionHome(actionButton: reloadData),
-            SliverRestaurantsHome(),
+            displayRestaurant(),
             SliverToBoxAdapter(child: SizedBox(height: 50)),
           ],
         ),

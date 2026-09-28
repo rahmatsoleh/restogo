@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:restogo_app/data/model/restaurant_detail_response.dart';
 import 'package:restogo_app/widgets/card_menu.dart';
 
 class MenuList extends StatelessWidget {
   final String label;
-  final List<Map<String, dynamic>> menus;
+  final List<Category> menus;
 
   const MenuList({super.key, required this.menus, required this.label});
 
@@ -23,7 +24,7 @@ class MenuList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: menus.length,
             itemBuilder: (context, index) {
-              return CardMenu(name: menus[index]["name"]);
+              return CardMenu(name: menus[index].name);
             },
             separatorBuilder: (context, index) {
               return SizedBox(width: 8);
