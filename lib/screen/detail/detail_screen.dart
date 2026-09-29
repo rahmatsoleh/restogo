@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/data/api/api_services.dart';
+import 'package:provider/provider.dart';
+import 'package:restogo_app/data/model/customer_review.dart';
 import 'package:restogo_app/data/model/restaurant_detail_response.dart';
+import 'package:restogo_app/providers/detail/restaurant_detail_provider.dart';
+import 'package:restogo_app/providers/detail/restaurant_review_provider.dart';
 import 'package:restogo_app/screen/detail/templates/appbar_detail.dart';
 import 'package:restogo_app/screen/detail/templates/categories_detail.dart';
 import 'package:restogo_app/screen/detail/templates/error_detail.dart';
@@ -8,6 +11,7 @@ import 'package:restogo_app/screen/detail/templates/form_review.dart';
 import 'package:restogo_app/screen/detail/templates/menu_list.dart';
 import 'package:restogo_app/screen/detail/templates/restaurant_detail.dart';
 import 'package:restogo_app/screen/detail/templates/reviews_detail.dart';
+import 'package:restogo_app/static/restaurant_detail_result_state.dart';
 
 class DetailScreen extends StatefulWidget {
   final String restoId;
@@ -20,52 +24,27 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool reviewed = false;
-  bool _isLoading = false;
-  bool _hasError = false;
-
-  List<Category>? _categories;
-  Menus? _menus;
   List<CustomerReview>? _customerReviews;
-  Restaurant? _restaurant;
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _reviewController = TextEditingController();
 
-  Future<void> loadData() async {
-    setState(() {
-      _isLoading = true;
-      _hasError = false;
-    });
-    try {
-      final response = await ApiServices().getDetailRestaurant(widget.restoId);
-      setState(() {
-        _restaurant = response.restaurant;
-        _menus = _restaurant!.menus;
-        _categories = _restaurant!.categories;
-        _customerReviews = _restaurant!.customerReviews;
-      });
-    } catch (e) {
-      setState(() {
-        _hasError = true;
-      });
+  void fetchData() {
+    if (!mounted) return;
 
-      if (!mounted) return;
+    final provider = context.read<RestaurantDetailProvider>();
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-
-    setState(() {
-      _isLoading = false;
+    Future.microtask(() {
+      provider.fetchRestaurantDetail(widget.restoId);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    loadData();
+    // loadData();
+    fetchData();
   }
 
   @override
@@ -82,11 +61,13 @@ class _DetailScreenState extends State<DetailScreen> {
 
     if (!_formKey.currentState!.validate()) return;
 
+    final provider = context.read<RestaurantReviewProvider>();
+
     try {
-      final response = await ApiServices().postCustomerReview(
-        id: widget.restoId,
-        name: _nameController.text,
-        review: _reviewController.text,
+      final customerReview = await provider.reviewCustomer(
+        widget.restoId,
+        _nameController.text,
+        _reviewController.text,
       );
 
       if (!mounted) return;
@@ -101,9 +82,10 @@ class _DetailScreenState extends State<DetailScreen> {
       _nameController.clear();
       _reviewController.clear();
       FocusScope.of(context).unfocus();
+
       setState(() {
         reviewed = true;
-        _customerReviews = response.customerReviews;
+        _customerReviews = customerReview;
       });
     } catch (e) {
       ScaffoldMessenger.of(
@@ -112,62 +94,77 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
+  Widget bodyResult(
+    Restaurant restaurant,
+    List<CustomerReview> customerReview,
+  ) {
+    return CustomScrollView(
+      slivers: [
+        AppbarDetail(name: restaurant.name, pictureId: restaurant.pictureId),
+        RestaurantDetail(
+          address: restaurant.address,
+          city: restaurant.city,
+          description: restaurant.description,
+          rating: restaurant.rating,
+        ),
+        CategoriesDetail(categories: restaurant.categories),
+        MenuList(menus: restaurant.menus.foods, label: "Menu Makanan"),
+        MenuList(menus: restaurant.menus.drinks, label: "Menu Minuman"),
+        ReviewsDetail(reviews: customerReview),
+        FormReview(
+          formKey: _formKey,
+          nameController: _nameController,
+          reviewController: _reviewController,
+          onSubmit: _submitReview,
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 16),
+              reviewed
+                  ? Center(
+                      child: Text(
+                        'Terima kasih sudah memberikan feedback ❤️',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: ColorScheme.of(context).tertiary,
+                        ),
+                      ),
+                    )
+                  : SizedBox(height: 20),
+              SizedBox(height: 50),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : (_hasError
-                ? ErrorDetail(actionButton: loadData)
-                : CustomScrollView(
-                    slivers: [
-                      AppbarDetail(
-                        name: _restaurant!.name,
-                        pictureId: _restaurant!.pictureId,
-                      ),
-                      RestaurantDetail(
-                        address: _restaurant!.address,
-                        city: _restaurant!.city,
-                        description: _restaurant!.description,
-                        rating: _restaurant!.rating,
-                      ),
-                      CategoriesDetail(categories: _categories!),
-                      MenuList(menus: _menus!.foods, label: "Menu Makanan"),
-                      MenuList(menus: _menus!.drinks, label: "Menu Minuman"),
-                      ReviewsDetail(reviews: _customerReviews!),
-                      FormReview(
-                        formKey: _formKey,
-                        nameController: _nameController,
-                        reviewController: _reviewController,
-                        onSubmit: _submitReview,
-                      ),
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 16),
-                            reviewed
-                                ? Center(
-                                    child: Text(
-                                      'Terima kasih sudah memberikan feedback ❤️',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: ColorScheme.of(
-                                              context,
-                                            ).tertiary,
-                                          ),
-                                    ),
-                                  )
-                                : SizedBox(height: 20),
-                            SizedBox(height: 50),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
+      body: Consumer<RestaurantDetailProvider>(
+        builder: (context, value, child) {
+          return switch (value.resultState) {
+            RestaurantDetailLoadingState() => Center(
+              child: CircularProgressIndicator(),
+            ),
+            RestaurantDetailLoadedState(data: var restaurant) => bodyResult(
+              restaurant,
+              _customerReviews ?? restaurant.customerReviews,
+            ),
+            RestaurantDetailErrorState(message: var message) => ErrorDetail(
+              actionButton: fetchData,
+              message: message,
+            ),
+            _ => ErrorDetail(
+              actionButton: fetchData,
+              message: "Halaman tidak tersedia.",
+            ),
+          };
+        },
+      ),
     );
   }
 }

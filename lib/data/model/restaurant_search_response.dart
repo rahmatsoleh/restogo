@@ -1,4 +1,4 @@
-import 'package:restogo_app/data/model/retaurant_list_response.dart';
+import 'package:restogo_app/data/model/restaurant.dart';
 
 class RestaurantSearchResponse {
   bool error;

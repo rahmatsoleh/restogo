@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/data/api/api_services.dart';
-import 'package:restogo_app/data/model/retaurant_list_response.dart';
+import 'package:provider/provider.dart';
+import 'package:restogo_app/providers/home/restaurant_list_provider.dart';
 import 'package:restogo_app/screen/home/templates/appbar_home.dart';
 import 'package:restogo_app/screen/home/templates/hero_home.dart';
 import 'package:restogo_app/screen/home/templates/restaurants_exception_home.dart';
 import 'package:restogo_app/screen/home/templates/search_button_home.dart';
 import 'package:restogo_app/screen/home/templates/sliver_restaurants_home.dart';
 import 'package:restogo_app/static/navigation_route.dart';
+import 'package:restogo_app/static/restaurant_list_result_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,34 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  RestaurantListResponse? _futureRestaurantResponse;
-  bool _isLoading = false;
-  bool _hasError = false;
+  void loadData() {
+    if (!mounted) return;
 
-  Future<void> loadData() async {
-    setState(() {
-      _isLoading = true;
-      _hasError = false;
-    });
-    try {
-      final response = await ApiServices().getRestaurantList();
-      setState(() {
-        _futureRestaurantResponse = response;
-      });
-    } catch (e) {
-      setState(() {
-        _hasError = true;
-      });
+    final provider = context.read<RestaurantListProvider>();
 
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-
-    setState(() {
-      _isLoading = false;
+    Future.microtask(() {
+      provider.fetchRestaurantList();
     });
   }
 
@@ -51,16 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadData();
-  }
-
-  Widget displayRestaurant() {
-    return _isLoading
-        ? SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
-        : (_hasError
-              ? RestaurantsExceptionHome(actionButton: loadData)
-              : SliverRestaurantsHome(
-                  restaurants: _futureRestaurantResponse!.restaurants,
-                ));
   }
 
   @override
@@ -91,7 +61,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            displayRestaurant(),
+            Consumer<RestaurantListProvider>(
+              builder: (context, value, child) {
+                return switch (value.resultState) {
+                  RestaurantListLoadingState() => SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  RestaurantListLoadedState(data: var restaurantList) =>
+                    SliverRestaurantsHome(restaurants: restaurantList),
+                  RestaurantListErrorState(error: var message) =>
+                    RestaurantsExceptionHome(
+                      actionButton: loadData,
+                      message: message,
+                    ),
+                  _ => SliverToBoxAdapter(child: SizedBox()),
+                };
+              },
+            ),
             SliverToBoxAdapter(child: SizedBox(height: 50)),
           ],
         ),

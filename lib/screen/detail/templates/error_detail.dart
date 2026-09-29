@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class ErrorDetail extends StatelessWidget {
   final Function actionButton;
-  const ErrorDetail({super.key, required this.actionButton});
+  final String message;
+  const ErrorDetail({
+    super.key,
+    required this.actionButton,
+    required this.message,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class ErrorDetail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Gagal mengambil data",
+            message,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: ColorScheme.of(context).error,
             ),

@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class RestaurantsExceptionHome extends StatelessWidget {
   final Function actionButton;
+  final String message;
 
-  const RestaurantsExceptionHome({super.key, required this.actionButton});
+  const RestaurantsExceptionHome({
+    super.key,
+    required this.actionButton,
+    required this.message,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class RestaurantsExceptionHome extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Gagal mengambil data",
+              message,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: ColorScheme.of(context).error,
               ),

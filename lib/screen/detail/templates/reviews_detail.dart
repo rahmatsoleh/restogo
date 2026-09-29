@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/data/model/restaurant_detail_response.dart';
+import 'package:restogo_app/data/model/customer_review.dart';
 import 'package:restogo_app/widgets/card_review.dart';
 
 class ReviewsDetail extends StatelessWidget {

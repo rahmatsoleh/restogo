@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/data/model/retaurant_list_response.dart';
+import 'package:restogo_app/data/model/restaurant.dart';
 import 'package:restogo_app/static/navigation_route.dart';
 import 'package:restogo_app/widgets/list_item_restaurant.dart';
 

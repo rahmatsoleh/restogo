@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:restogo_app/data/api/api_services.dart';
-import 'package:restogo_app/data/model/retaurant_list_response.dart';
+import 'package:provider/provider.dart';
+import 'package:restogo_app/providers/search/restaurant_search_provider.dart';
 import 'package:restogo_app/screen/search/templates/notfound_search.dart';
 import 'package:restogo_app/screen/search/templates/result_list_search.dart';
+import 'package:restogo_app/static/restaurant_search_result_state.dart';
 import 'package:restogo_app/style/colors/restogo_colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -16,36 +17,14 @@ class _SearchScreenState extends State<SearchScreen> {
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _query = TextEditingController();
 
-  List<Restaurant> _restaurants = [];
-  bool _isLoading = false;
-  bool _hasError = false;
+  void fetchingData() {
+    if (!mounted) return;
 
-  Future<void> loadData() async {
-    setState(() {
-      _isLoading = true;
-      _hasError = false;
+    final provider = context.read<RestaurantSearchProvider>();
+
+    Future.microtask(() {
+      provider.fetchRestaurantSearch(_query.text);
     });
-    try {
-      final response = await ApiServices().getSearchRestaurantList(_query.text);
-
-      setState(() {
-        _restaurants = response.restaurants;
-      });
-    } catch (e) {
-      setState(() {
-        _hasError = true;
-      });
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   @override
@@ -111,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: IconButton(
-                  onPressed: () => loadData(),
+                  onPressed: () => fetchingData(),
                   icon: Icon(Icons.search, color: Colors.white),
                 ),
               ),
@@ -119,12 +98,30 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ((_hasError || (_restaurants.isEmpty && _query.text.isNotEmpty))
-                ? NotfoundSearch()
-                : ResultListSearch(restaurants: _restaurants)),
-      // body: NotfoundSearch(),
+      body: Consumer<RestaurantSearchProvider>(
+        builder: (context, value, child) {
+          return switch (value.resultState) {
+            RestaurantSearchLoadingState() => Center(
+              child: CircularProgressIndicator(),
+            ),
+            RestaurantSearchLoadedState(data: var restaurants) =>
+              restaurants.isEmpty
+                  ? NotfoundSearch(
+                      message: "Pencarian ${_query.text} tidak ditemukan.",
+                    )
+                  : ResultListSearch(restaurants: restaurants),
+            RestaurantSearchErrorState(message: var message) => NotfoundSearch(
+              message: message,
+            ),
+            _ => Center(
+              child: Text(
+                "Lakukan pencarian pada kolom",
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          };
+        },
+      ),
     );
   }
 }

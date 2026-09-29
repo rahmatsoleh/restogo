@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 class NotfoundSearch extends StatelessWidget {
-  const NotfoundSearch({super.key});
+  final String message;
+  const NotfoundSearch({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        "Pencarian anda tidak ditemukan.",
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
+      child: Text(message, style: Theme.of(context).textTheme.bodyLarge),
     );
   }
 }
